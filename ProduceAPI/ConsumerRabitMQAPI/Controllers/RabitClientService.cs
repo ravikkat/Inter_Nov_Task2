@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,7 +90,7 @@ namespace ConsumerRabitMQAPI.Controllers
                 var body = Encoding.UTF8.GetBytes(smessagerabit);
 
                 channel.BasicPublish(exchange: "",
-                                     routingKey: "TaskQueue",
+                                     routingKey: "BitCoin",
                                      basicProperties: null,
                                      body: body);
             }
@@ -117,7 +117,7 @@ namespace ConsumerRabitMQAPI.Controllers
 
         private string GetbitCoindata()
         {
-            string sgdCurrency = "Test";
+            string sResulut = "Test";
             string surl = "https://api.coindesk.com/v1/bpi/currentprice.json";
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -137,12 +137,12 @@ namespace ConsumerRabitMQAPI.Controllers
                         readTask.Wait();
 
                         var alldata = readTask.Result;
-                        var roles = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(alldata);
-                        dynamic stuff = JsonConvert.DeserializeObject(alldata);
-                        dynamic objParsedata = Newtonsoft.Json.Linq.JObject.Parse(alldata);
-                       
-                       
-                        sgdCurrency = ((Newtonsoft.Json.Linq.JContainer)objParsedata).Last.ToString();
+                        //  var roles = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(alldata);
+                        //  dynamic stuff = JsonConvert.DeserializeObject(alldata);
+                        // dynamic objParsedata = Newtonsoft.Json.Linq.JObject.Parse(alldata);
+
+                        sResulut = alldata;
+                       // sgdCurrency = ((Newtonsoft.Json.Linq.JContainer)objParsedata).Last.ToString();
                     }
                 }
                 catch (Exception e)
@@ -151,7 +151,7 @@ namespace ConsumerRabitMQAPI.Controllers
                 }
 
             }
-            return sgdCurrency;
+            return sResulut;
 
         }
     }
